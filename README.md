@@ -22,7 +22,15 @@ Or install it yourself as:
 
 ## Usage
 
-		
+		client = EversignClient::Client.new(<YOUR_API_KEY>)
+
+### Fetch businesses
+Using the `list_businesses` function all businesses on the eversign account will be fetched and listed along with their Business IDs.
+
+
+		businesses = client.list_businesses
+		p businesses[0]
+
 
 ## Development
 
