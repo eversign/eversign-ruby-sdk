@@ -1,8 +1,6 @@
 # EversignClient
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/eversign_client`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Ruby SDK for eversign [API](https://eversign.com/api/documentation)
 
 ## Installation
 
@@ -24,13 +22,19 @@ Or install it yourself as:
 
 		client = EversignClient::Client.new(<YOUR_API_KEY>)
 
-### Fetch businesses
+### List businesses
 Using the `list_businesses` function all businesses on the eversign account will be fetched and listed along with their Business IDs.
 
 
 		businesses = client.list_businesses
 		p businesses[0]
 
+
+### List Documents
+Using the `list_document` function all documents on the eversign account associated with given business id and type will be fetched and listed.
+
+		documents = client.list_documents(<BUSINESS_ID>,<TYPE>)
+		p documents
 
 ## Development
 
@@ -40,7 +44,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/eversign_client. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/workatbest/eversign_client. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 
 ## License
