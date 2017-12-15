@@ -29,19 +29,25 @@ Or install it yourself as:
 
 		client = EversignClient::Client.new
 
-### List businesses
-Using the `list_businesses` function all businesses on the eversign account will be fetched and listed along with their Business IDs.
+### Get All businesses
+Using the `gwt_businesses` function all businesses on the eversign account will be fetched and listed along with their Business IDs.
 
 
-		businesses = client.list_businesses
+		businesses = client.get_businesses
 		p businesses[0]
 
 
-### List Documents
-Using the `list_document` function all documents on the eversign account associated with given business id and type will be fetched and listed.
+### Get All Documents
+Using the `get_documents` function all documents on the eversign account associated with given business id and type will be fetched and listed.
 
-		documents = client.list_documents(<BUSINESS_ID>,<TYPE>)
+		documents = client.get_documents(<BUSINESS_ID>,<TYPE>)
 		p documents
+
+### Get Document
+Using the `get_document` function specific document on the eversign account associated with given business id and document hash will be fetched and listed.
+
+		document = client.get_document(<BUSINESS_ID>,<DOCUMENT_HASH>)
+		p document
 
 ### [Create Document](/examples/create_document.rb)
 
