@@ -18,9 +18,16 @@ Or install it yourself as:
 
     $ gem install eversign_client
 
+## Configuration
+
+		EversignClient.configure do |c|
+		  c.api_base = '<YOUR_BASE_API>|https://api.eversign.com/api'
+		  c.access_key = '<YOUR_API_KEY>'
+		end
+
 ## Usage
 
-		client = EversignClient::Client.new(<YOUR_API_KEY>)
+		client = EversignClient::Client.new
 
 ### List businesses
 Using the `list_businesses` function all businesses on the eversign account will be fetched and listed along with their Business IDs.
