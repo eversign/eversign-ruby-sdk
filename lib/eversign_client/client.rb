@@ -6,6 +6,7 @@ require "logger"
 module EversignClient
 	class Client
 		attr_accessor :access_key, :base_uri
+		
 		BUSINESS_PATH = '/business{?access_key}'
 		DOCUMENTS_PATH = '/document{?access_key,business_id,type}'
 		CREATE_DOCUMENT_PATH = '/document{?access_key,business_id}'
@@ -74,7 +75,6 @@ module EversignClient
 			url = template.partial_expand(access_key: access_key, business_id: business_id).pattern
 			for file in document.files
         if file.file_url
-          raise FileNotFoundException(file.file_url) unless File.exists?(file.file_url)
           file_response = self.upload_file(file.file_url)
           file.file_url = None
           file.file_id = file_response.file_id
@@ -96,26 +96,42 @@ module EversignClient
 			Faraday.delete url
 		end
 
+		def download_raw_document_to_path(business_id, document_hash, path)
+			sub_uri = '/download_raw_document{?access_key,business_id,document_hash}'
+			download(business_id, document_hash, nil, sub_uri, path)
+		end
+
+		def download_final_document_to_path(business_id, document_hash, path, audit_trail=1)
+			sub_uri = '/download_raw_document{?access_key,business_id,document_hash,audit_trail}'
+			download(business_id, document_hash, audit_trail, sub_uri, path)
+		end
+
 		def upload_file(business_id, file_path)
+			raise FileNotFoundException(file.file_url) unless File.exists?(file.file_url)
+	  	
 	  	template = Addressable::Template.new(self.base_uri + FILE_PATH)
 			url = template.partial_expand(access_key: access_key, business_id: business_id).pattern
-
 			conn = Faraday.new(url) do |f|
 			  f.request :multipart
 			  f.adapter :net_http
 			end
-
 			payload = { upload: Faraday::UploadIO.new(file_path, 'text/plain') }
 			response = conn.post url, payload
 			extract_response(response.body, EversignClient::Mappings::File)
 		end
 
 		private
+			def download(business_id, document_hash, audit_trail, sub_uri, path)
+				template = Addressable::Template.new(self.base_uri + sub_uri)
+				url = template.partial_expand(access_key: access_key, business_id: business_id, document_hash:document_hash, audit_trail: audit_trail).pattern
+				response = Faraday.get url
+				File.open(path, 'wb') { |fp| fp.write(response.body) }
+			end
+
 			def get_documents(business_id, doc_type)
 		  	template = Addressable::Template.new(self.base_uri + DOCUMENTS_PATH)
 		  	url = template.partial_expand(access_key: access_key, business_id: business_id, type: doc_type).pattern
 		  	response = Faraday.get url
-		  	p response.body
 		  	extract_response(response.body, EversignClient::Mappings::Document)
 			end
 

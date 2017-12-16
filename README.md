@@ -103,6 +103,13 @@ Using the `get_document` function specific document on the eversign account asso
 		file = client.upload_file(<BUSINESS_ID>,<FILE_PATH>)
 		p file.file_id
 
+### Download raw file
+		
+		client.download_raw_document_to_path(<BUSINESS_ID>,<DOCUMENT_HASH>,<FILE_PATH>)
+
+### Download final file
+		
+		client.download_final_document_to_path(<BUSINESS_ID>,<DOCUMENT_HASH>,<FILE_PATH>)
 
 ## Development
 
