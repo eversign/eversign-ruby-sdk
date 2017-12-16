@@ -1,4 +1,4 @@
-module EversignClient
+module Eversign
 	module Models
 		class Field
 	    attr_accessor :name, :type, :x, :y, :width, :height, :page, :signer, :identifier, :required, :readonly,

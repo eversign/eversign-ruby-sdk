@@ -1,4 +1,4 @@
-module EversignClient
+module Eversign
   module Models
     class TextField
       attr_accessor :identifier, :value

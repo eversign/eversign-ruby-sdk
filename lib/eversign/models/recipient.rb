@@ -1,4 +1,4 @@
-module EversignClient
+module Eversign
 	module Models
 		class Recipient
 	    attr_accessor :name, :email, :role

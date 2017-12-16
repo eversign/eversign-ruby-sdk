@@ -8,5 +8,6 @@
 /spec/reports/
 /tmp/
 test.rb
-eversign_client-*.gem
+eversign-*.gem
 *.pdf
+*.jpg

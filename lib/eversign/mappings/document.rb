@@ -1,13 +1,13 @@
 require 'kartograph'
 require_relative '../models/document'
 
-module EversignClient
+module Eversign
 	module Mappings
 		class File
 			include Kartograph::DSL
 
 			kartograph do
-		    mapping EversignClient::Models::File
+		    mapping Eversign::Models::File
 
 		    property :name, :file_id, :file_url, :file_base64
 		  end
@@ -17,20 +17,29 @@ module EversignClient
 			include Kartograph::DSL
 
 			kartograph do
-		    mapping EversignClient::Models::Signer
+		    mapping Eversign::Models::Signer
 
 		    property :id, :name, :email, :order, :pin, :message, :deliver_email, :role
 		  end
 		end
 
-		class Field
+		class Field < Array
 			include Kartograph::DSL
 
 			kartograph do
-		    mapping EversignClient::Models::Field
+		    mapping Eversign::Models::Field
 
-		    property :name, :type, :x, :y, :width, :height, :page, :signer, :identifier, :required, :readonly,
-		    					:validation_type, :text_style, :text_font, :text_size, :text_color, :value, :options, :group, :identifier, :value
+		    property :x, :y, :width, :height, :page, :signer, :identifier, :required, :readonly
+		    				
+		  end
+		end
+
+		class FieldList
+			include Kartograph::DSL
+
+			kartograph do
+		    mapping Array
+		    property include: Field
 		  end
 		end
 
@@ -38,7 +47,7 @@ module EversignClient
 			include Kartograph::DSL
 
 			kartograph do
-		    mapping EversignClient::Models::Recipient
+		    mapping Eversign::Models::Recipient
 
 		    property :name, :email, :role
 		  end
@@ -48,7 +57,7 @@ module EversignClient
 			include Kartograph::DSL
 
 			kartograph do
-		    mapping EversignClient::Models::Document
+		    mapping Eversign::Models::Document
 
 		    property :document_hash, :template_id, :sandbox, :is_draft, :title, :message, :use_signer_order, :reminders, :require_all_signers,
 		    				  :redirect, :redirect_decline, :client, :expires, :embedded_signing_enabled, :requester_email, :is_template,
@@ -56,8 +65,7 @@ module EversignClient
 		    property :files, plural: true, include: File
 		    property :signers, plural: true, include: Signer
 		    property :recipients, plural: true, include: Recipient
-		    property :recipients, plural: true, include: Field
-
+		    #property :fields, plural: true, include: Field
 		  end
 		end
 	end

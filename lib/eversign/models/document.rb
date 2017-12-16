@@ -1,4 +1,4 @@
-module EversignClient
+module Eversign
 	module Models
 		class Document
 	    attr_accessor :document_hash, :template_id, :sandbox, :is_draft, :title, :message, :use_signer_order, :reminders, :require_all_signers,
@@ -12,8 +12,12 @@ module EversignClient
 		  end
 
 		  def add_field(field)
+		  	add_field_list([field])
+		  end
+
+		  def add_field_list(feild_list)
 		  	self.fields ||= []
-		  	self.fields << field
+		  	self.fields << feild_list
 		  end
 
 		  def add_recipient(recipient)

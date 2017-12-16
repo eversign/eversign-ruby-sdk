@@ -1,17 +1,17 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'eversign_client/version'
+require 'eversign/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "eversign_client"
-  spec.version       = EversignClient::VERSION
+  spec.name          = "eversign"
+  spec.version       = Eversign::VERSION
   spec.authors       = ["Sachin Raka"]
   spec.email         = ["Sachin.Raka@outlook.com"]
 
   spec.summary       = %q{Gem for Eversign API Client.}
-  spec.description   = %q{Gem for Eversign API Client.}
-  spec.homepage      = "https://github.com/workatbest/eversign_client"
+  spec.description   = %q{Gem for Eversign API SDK.}
+  spec.homepage      = "https://github.com/workatbest/eversign-ruby-sdk"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'

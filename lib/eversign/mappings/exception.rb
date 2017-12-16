@@ -1,13 +1,13 @@
 require 'kartograph'
 #require_relative '../models/document'
 
-module EversignClient
+module Eversign
 	module Mappings
 		class Error
 			include Kartograph::DSL
 
 			kartograph do
-		    mapping EversignClient::Models::Error
+		    mapping Eversign::Models::Error
 
 		    property :code, :type, :info
 		  end
@@ -17,7 +17,7 @@ module EversignClient
 			include Kartograph::DSL
 
 			kartograph do
-		    mapping EversignClient::Models::Exception
+		    mapping Eversign::Models::Exception
 
 		    property :success
 		    property :error, include: Error

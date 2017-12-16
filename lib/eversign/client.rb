@@ -1,30 +1,25 @@
 require 'addressable/template'
 require 'faraday'
 require 'json'
-require "logger"
+require 'logger'
 
-module EversignClient
+module Eversign
+	
+	class FileNotFoundException < Exception
+	end
+
 	class Client
 		attr_accessor :access_key, :base_uri
-		
-		BUSINESS_PATH = '/business{?access_key}'
-		DOCUMENTS_PATH = '/document{?access_key,business_id,type}'
-		CREATE_DOCUMENT_PATH = '/document{?access_key,business_id}'
-		DOCUMENT_PATH = '/document{?access_key,business_id,document_hash,cancel}'
-		FILE_PATH = '/file{?access_key,business_id}'
-		
-		class FileNotFoundException < Exception
-		end
 
 		def initialize()
-			self.base_uri = EversignClient.configuration.api_base || 'https://api.eversign.com/api'
-			self.access_key = EversignClient.configuration.access_key
+			self.base_uri = Eversign.configuration.api_base || 'https://api.eversign.com/api'
+			self.access_key = Eversign.configuration.access_key
 		end
 
 		def get_buisnesses
-	  	template = Addressable::Template.new(self.base_uri + BUSINESS_PATH)
+	  	template = Addressable::Template.new(self.base_uri + '/business{?access_key}')
 	  	response = Faraday.get template.partial_expand(access_key: access_key).pattern
-	  	extract_response(response.body, EversignClient::Mappings::Business)
+	  	extract_response(response.body, Eversign::Mappings::Business)
 		end
 
 		def get_all_documents(business_id)
@@ -64,36 +59,33 @@ module EversignClient
 		end
 
 		def get_document(business_id, document_hash)
-	  	template = Addressable::Template.new(self.base_uri + DOCUMENT_PATH)
+	  	template = Addressable::Template.new(self.base_uri + '/document{?access_key,business_id,document_hash}')
 			url = template.partial_expand(access_key: access_key, business_id: business_id, document_hash: document_hash).pattern
 	  	response = Faraday.get url
-	  	extract_response(response.body, EversignClient::Mappings::Document)
+	  	extract_response(response.body, Eversign::Mappings::Document)
 		end
 
 		def create_document(business_id, document)
-			template = Addressable::Template.new(self.base_uri + CREATE_DOCUMENT_PATH)
+			template = Addressable::Template.new(self.base_uri + '/document{?access_key,business_id}')
 			url = template.partial_expand(access_key: access_key, business_id: business_id).pattern
 			for file in document.files
         if file.file_url
-          file_response = self.upload_file(file.file_url)
-          file.file_url = None
+          file_response = self.upload_file(business_id, file.file_url)
+          file.file_url = nil
           file.file_id = file_response.file_id
         end
       end
-			response = Faraday.post url, EversignClient::Mappings::Document.representation_for(nil, document)
-			extract_response(response.body, EversignClient::Mappings::Document)
+      p document
+			response = Faraday.post url, Eversign::Mappings::Document.representation_for(nil, document)
+			extract_response(response.body, Eversign::Mappings::Document)
 		end
 
 		def delete_document(business_id, document_hash)
-			template = Addressable::Template.new(self.base_uri + DOCUMENT_PATH)
-			url = template.partial_expand(access_key: access_key, business_id: business_id, document_hash: document_hash).pattern
-			Faraday.delete url
+			delete('/document{?access_key,business_id,document_hash}', business_id, document_hash)
 		end
 
 		def cancel_document(business_id, document_hash)
-			template = Addressable::Template.new(self.base_uri + DOCUMENT_PATH)
-			url = template.partial_expand(access_key: access_key, business_id: business_id, document_hash: document_hash, cancel: 1).pattern
-			Faraday.delete url
+			delete('/document{?access_key,business_id,document_hash,cancel}', business_id, document_hash)
 		end
 
 		def download_raw_document_to_path(business_id, document_hash, path)
@@ -107,9 +99,7 @@ module EversignClient
 		end
 
 		def upload_file(business_id, file_path)
-			raise FileNotFoundException(file.file_url) unless File.exists?(file.file_url)
-	  	
-	  	template = Addressable::Template.new(self.base_uri + FILE_PATH)
+	  	template = Addressable::Template.new(self.base_uri + '/file{?access_key,business_id}')
 			url = template.partial_expand(access_key: access_key, business_id: business_id).pattern
 			conn = Faraday.new(url) do |f|
 			  f.request :multipart
@@ -117,10 +107,17 @@ module EversignClient
 			end
 			payload = { upload: Faraday::UploadIO.new(file_path, 'text/plain') }
 			response = conn.post url, payload
-			extract_response(response.body, EversignClient::Mappings::File)
+			extract_response(response.body, Eversign::Mappings::File)
 		end
 
 		private
+			def delete(sub_uri, business_id, document_hash)
+				template = Addressable::Template.new(self.base_uri + sub_uri)
+				url = template.partial_expand(access_key: access_key, business_id: business_id, document_hash: document_hash, cancel: 1).pattern
+				response = Faraday.delete url
+				eval(response.body)[:success] ? true : extract_response(response.body, nil)
+			end
+
 			def download(business_id, document_hash, audit_trail, sub_uri, path)
 				template = Addressable::Template.new(self.base_uri + sub_uri)
 				url = template.partial_expand(access_key: access_key, business_id: business_id, document_hash:document_hash, audit_trail: audit_trail).pattern
@@ -129,10 +126,10 @@ module EversignClient
 			end
 
 			def get_documents(business_id, doc_type)
-		  	template = Addressable::Template.new(self.base_uri + DOCUMENTS_PATH)
+		  	template = Addressable::Template.new(self.base_uri + '/document{?access_key,business_id,type}')
 		  	url = template.partial_expand(access_key: access_key, business_id: business_id, type: doc_type).pattern
 		  	response = Faraday.get url
-		  	extract_response(response.body, EversignClient::Mappings::Document)
+		  	extract_response(response.body, Eversign::Mappings::Document)
 			end
 
 			def extract_response(body, mapping)
@@ -141,7 +138,7 @@ module EversignClient
 					mapping.extract_collection(body, nil)
 				else
 					if data.key?(:success)
-						EversignClient::Mappings::Exception.extract_single(body, nil)
+						Eversign::Mappings::Exception.extract_single(body, nil)
 					else
 						mapping.extract_single(body, nil)
 					end

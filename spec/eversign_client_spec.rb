@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe EversignClient do
+describe Eversign do
   it 'has a version number' do
-    expect(EversignClient::VERSION).not_to be nil
+    expect(Eversign::VERSION).not_to be nil
   end
 
   it 'does something useful' do

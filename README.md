@@ -1,4 +1,4 @@
-# EversignClient
+# Eversign Ruby SDK
 
 Ruby SDK for eversign [API](https://eversign.com/api/documentation)
 
@@ -7,7 +7,7 @@ Ruby SDK for eversign [API](https://eversign.com/api/documentation)
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'eversign_client'
+gem 'eversign'
 ```
 
 And then execute:
@@ -16,18 +16,18 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install eversign_client
+    $ gem install eversign
 
 ## Configuration
 
-		EversignClient.configure do |c|
+		Eversign.configure do |c|
 		  c.api_base = '<YOUR_BASE_API>|https://api.eversign.com/api'
 		  c.access_key = '<YOUR_API_KEY>'
 		end
 
 ## Usage
 
-		client = EversignClient::Client.new
+		client = Eversign::Client.new
 
 ### Get All businesses
 Using the `gwt_businesses` function all businesses on the eversign account will be fetched and listed along with their Business IDs.
@@ -119,7 +119,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/workatbest/eversign_client. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/workatbest/eversign. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 
 ## License
