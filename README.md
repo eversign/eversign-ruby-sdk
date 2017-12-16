@@ -37,13 +37,45 @@ Using the `gwt_businesses` function all businesses on the eversign account will 
 		p businesses[0]
 
 
-### Get All Documents
+### Get Documents
 Using the `get_documents` function all documents on the eversign account associated with given business id and type will be fetched and listed.
 
-		documents = client.get_documents(<BUSINESS_ID>,<TYPE>)
+#### All
+
+		documents = client.get_all_ocuments(<BUSINESS_ID>)
+		p documents
+
+#### Completed
+
+		documents = client.get_completed_documents(<BUSINESS_ID>)
+		p documents
+
+#### Drafts
+
+		documents = client.get_drafts_documents(<BUSINESS_ID>)
+		p documents
+
+#### Cancelled
+
+		documents = client.get_cancelled_documents(<BUSINESS_ID>)
+		p documents
+
+#### Action Required
+
+		documents = client.get_action_required_documents(<BUSINESS_ID>)
+		p documents
+
+#### Waiting for Others
+
+		documents = client.get_waiting_for_others_documents(<BUSINESS_ID>)
 		p documents
 
 ### Get Document
+Using the `get_document` function specific document on the eversign account associated with given business id and document hash will be fetched and listed.
+
+		document = client.get_document(<BUSINESS_ID>,<DOCUMENT_HASH>)
+		p document
+
 Using the `get_document` function specific document on the eversign account associated with given business id and document hash will be fetched and listed.
 
 		document = client.get_document(<BUSINESS_ID>,<DOCUMENT_HASH>)
