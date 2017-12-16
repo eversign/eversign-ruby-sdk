@@ -31,5 +31,6 @@ document.add_signer(signer)
 document.add_recipient(recipient)
 
 client = EversignClient::Client.new
-business =  client.get_buisnesses[0]
+business =  client.get_buisnesses[1]
+p business
 p client.create_document(business.business_id, document)

@@ -19,6 +19,7 @@ module EversignClient
 	include Configurations
 	configurable String, :access_key
 	configurable String, :api_base do |value|
+		value ||= 'https://api.eversign.com/api'
 		parsed = Addressable::URI.parse(value)
   	if %w(http https).include?(parsed.scheme)
   		value

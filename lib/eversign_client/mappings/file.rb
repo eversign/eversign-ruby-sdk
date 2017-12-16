@@ -9,7 +9,7 @@ module EversignClient
 			kartograph do
 		    mapping EversignClient::Models::File
 
-		    property :name, :file_id, :file_url, :file_base64
+		    property :name, :file_id, :file_url, :file_base64, :pages, :total_pages
 		  end
 		end
 	end

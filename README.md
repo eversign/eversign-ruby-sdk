@@ -38,7 +38,7 @@ Using the `gwt_businesses` function all businesses on the eversign account will 
 
 
 ### Get Documents
-Using the `get_documents` function all documents on the eversign account associated with given business id and type will be fetched and listed.
+Using the following functions required documents on the eversign account associated with given business id will be fetched and listed.
 
 #### All
 
@@ -70,18 +70,38 @@ Using the `get_documents` function all documents on the eversign account associa
 		documents = client.get_waiting_for_others_documents(<BUSINESS_ID>)
 		p documents
 
+
+### Get Templates
+Using the following functions required templates on the eversign account associated with given business id will be fetched and listed.
+
+#### All
+
+		templates = client.get_templates(<BUSINESS_ID>)
+		p templates
+
+#### Archieved
+
+		templates = client.get_archived_templates(<BUSINESS_ID>)
+		p templates
+
+#### Drafts
+
+		templates = client.get_drafts_templates(<BUSINESS_ID>)
+		p templates
+
 ### Get Document
 Using the `get_document` function specific document on the eversign account associated with given business id and document hash will be fetched and listed.
 
 		document = client.get_document(<BUSINESS_ID>,<DOCUMENT_HASH>)
 		p document
 
-Using the `get_document` function specific document on the eversign account associated with given business id and document hash will be fetched and listed.
-
-		document = client.get_document(<BUSINESS_ID>,<DOCUMENT_HASH>)
-		p document
 
 ### [Create Document](/examples/create_document.rb)
+
+### Upload file
+		
+		file = client.upload_file(<BUSINESS_ID>,<FILE_PATH>)
+		p file.file_id
 
 
 ## Development
@@ -98,4 +118,3 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/workat
 ## License
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
-
