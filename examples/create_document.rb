@@ -24,6 +24,9 @@ field.signer = 1
 field.width = 120
 field.height = 35
 field.required = 1
+field.readonly = 1
+field.merge = 0
+field.type = 'signature'
 
 document.add_field(field)
 document.add_file(file)
@@ -33,6 +36,4 @@ recipient = Eversign::Models::Recipient.new(name='Test2', email='recipient2@gmai
 document.add_recipient(recipient)
 
 client = Eversign::Client.new
-business =  client.get_buisnesses[1]
-p business
 p client.create_document(document)

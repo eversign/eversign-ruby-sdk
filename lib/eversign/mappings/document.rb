@@ -23,23 +23,15 @@ module Eversign
 		  end
 		end
 
-		class Field < Array
+		class Field
 			include Kartograph::DSL
 
 			kartograph do
 		    mapping Eversign::Models::Field
 
-		    property :x, :y, :width, :height, :page, :signer, :identifier, :required, :readonly
+		    property :name, :type, :x, :y, :width, :height, :page, :signer, :identifier, :required, :readonly, :merge, :type,
+		    					:validation_type, :text_style, :text_font, :text_size, :text_color, :value, :options, :group
 		    				
-		  end
-		end
-
-		class FieldList
-			include Kartograph::DSL
-
-			kartograph do
-		    mapping Array
-		    property :'', plural: true, include: Field
 		  end
 		end
 
@@ -65,7 +57,43 @@ module Eversign
 		    property :files, plural: true, include: File
 		    property :signers, plural: true, include: Signer
 		    property :recipients, plural: true, include: Recipient
-		    #property :fields ,plural: true, include: FieldList
+		  end
+
+		  def self.extract_collection(content, scope)
+        super(content, scope)
+      end
+
+      def self.extract_single(content, scope)
+        obj = super(content, scope)
+        data = eval(content)
+        if data[:fields]
+        	data[:fields].each do |field_list|
+	      		field_data = []
+			  		field_list.each do |field|
+			  			extracted_field = Field.extract_single(field.to_json, nil)
+			  			field_data << extracted_field if extracted_field
+			  		end
+			  		obj.add_field_list(field_data)
+			  	end
+			  end
+        obj
+      end
+
+		  def self.representation_for(document)
+		  	data = super(nil, document)
+		  	list = []
+		  	if document.fields
+			  	document.fields.each do |field_list|
+			  		field_data = []
+			  		field_list.each do |field|
+			  			field_data << JSON.parse(Field.representation_for(nil, field))
+			  		end
+			  		list << field_data
+			  	end
+			  end
+		  	data = JSON.parse(data)
+		  	data['fields'] = list
+		  	JSON.dump(data)
 		  end
 		end
 	end

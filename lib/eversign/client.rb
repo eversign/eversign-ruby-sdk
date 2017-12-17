@@ -76,7 +76,8 @@ module Eversign
           file.file_id = file_response.file_id
         end
       end
-			response = Faraday.post url, Eversign::Mappings::Document.representation_for(nil, document)
+      data = Eversign::Mappings::Document.representation_for(document)
+			response = Faraday.post url, data
 			extract_response(response.body, Eversign::Mappings::Document)
 		end
 
