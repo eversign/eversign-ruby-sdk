@@ -60,7 +60,12 @@ module Eversign
 		  end
 
 		  def self.extract_collection(content, scope)
-        super(content, scope)
+        data = eval(content)
+        result = []
+        data.each do |item|
+        	result << extract_single(item.to_json, nil)
+ 				end
+ 				result
       end
 
       def self.extract_single(content, scope)
