@@ -39,7 +39,7 @@ OR directly set on client if needed
 Using the `gwt_businesses` function all businesses on the eversign account will be fetched and listed along with their Business IDs.
 
 
-		businesses = client.get_businesses
+		businesses = client.get_businesses()
 		p businesses[0]
 
 
@@ -48,32 +48,32 @@ Using the following functions required documents on the eversign account associa
 
 #### All
 
-		documents = client.get_all_ocuments(<BUSINESS_ID>)
+		documents = client.get_all_ocuments()
 		p documents
 
 #### Completed
 
-		documents = client.get_completed_documents(<BUSINESS_ID>)
+		documents = client.get_completed_documents()
 		p documents
 
 #### Draft
 
-		documents = client.get_draft_documents(<BUSINESS_ID>)
+		documents = client.get_draft_documents()
 		p documents
 
 #### Cancelled
 
-		documents = client.get_cancelled_documents(<BUSINESS_ID>)
+		documents = client.get_cancelled_documents()
 		p documents
 
 #### Action Required
 
-		documents = client.get_action_required_documents(<BUSINESS_ID>)
+		documents = client.get_action_required_documents()
 		p documents
 
 #### Waiting for Others
 
-		documents = client.get_waiting_for_others_documents(<BUSINESS_ID>)
+		documents = client.get_waiting_for_others_documents()
 		p documents
 
 
@@ -82,23 +82,23 @@ Using the following functions required templates on the eversign account associa
 
 #### All
 
-		templates = client.get_templates(<BUSINESS_ID>)
+		templates = client.get_templates
 		p templates
 
 #### Archieved
 
-		templates = client.get_archived_templates(<BUSINESS_ID>)
+		templates = client.get_archived_templates()
 		p templates
 
 #### Draft
 
-		templates = client.get_draft_templates(<BUSINESS_ID>)
+		templates = client.get_draft_templates()
 		p templates
 
 ### Get Document
 Using the `get_document` function specific document on the eversign account associated with given business id and document hash will be fetched and listed.
 
-		document = client.get_document(<BUSINESS_ID>,<DOCUMENT_HASH>)
+		document = client.get_document(<DOCUMENT_HASH>)
 		p document
 
 
@@ -106,16 +106,20 @@ Using the `get_document` function specific document on the eversign account asso
 
 ### Upload file
 		
-		file = client.upload_file(<BUSINESS_ID>,<FILE_PATH>)
+		file = client.upload_file(<FILE_PATH>)
 		p file.file_id
 
 ### Download raw file
 		
-		client.download_raw_document_to_path(<BUSINESS_ID>,<DOCUMENT_HASH>,<FILE_PATH>)
+		client.download_raw_document_to_path(<DOCUMENT_HASH>,<FILE_PATH>)
 
 ### Download final file
 		
-		client.download_final_document_to_path(<BUSINESS_ID>,<DOCUMENT_HASH>,<FILE_PATH>)
+		client.download_final_document_to_path(<DOCUMENT_HASH>,<FILE_PATH>)
+
+### Send Email Reminder
+
+		send_reminder_for_document(<DOCUMENT_HASH>,<SIGNER_ID>)
 
 ## Development
 

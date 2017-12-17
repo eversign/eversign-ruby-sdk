@@ -117,6 +117,13 @@ module Eversign
 			extract_response(response.body, Eversign::Mappings::File)
 		end
 
+		def send_reminder_for_document(document_hash, signer_id)
+			template = Addressable::Template.new(self.base_uri + '/send_reminder{?access_key,business_id}')
+			url = template.partial_expand(access_key: access_key, business_id: business_id).pattern
+			response = Faraday.post url, {document_hash: document_hash, signer_id: signer_id}.to_json
+			eval(response.body)[:success] ? true : extract_response(response.body, nil)
+		end
+
 		private
 			def delete(sub_uri, document_hash)
 				template = Addressable::Template.new(self.base_uri + sub_uri)
