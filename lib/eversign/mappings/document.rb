@@ -60,7 +60,7 @@ module Eversign
 		  end
 
 		  def self.extract_collection(content, scope)
-        data = eval(content)
+        data = JSON.parse(content)
         result = []
         data.each do |item|
         	result << extract_single(item.to_json, nil)
@@ -70,9 +70,9 @@ module Eversign
 
       def self.extract_single(content, scope)
         obj = super(content, scope)
-        data = eval(content)
-        if data[:fields]
-        	data[:fields].each do |field_list|
+        data = JSON.parse(content)
+        if data['fields']
+        	data['fields'].each do |field_list|
 	      		field_data = []
 			  		field_list.each do |field|
 			  			extracted_field = Field.extract_single(field.to_json, nil)

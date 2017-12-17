@@ -56,9 +56,9 @@ Using the following functions required documents on the eversign account associa
 		documents = client.get_completed_documents(<BUSINESS_ID>)
 		p documents
 
-#### Drafts
+#### Draft
 
-		documents = client.get_drafts_documents(<BUSINESS_ID>)
+		documents = client.get_draft_documents(<BUSINESS_ID>)
 		p documents
 
 #### Cancelled
@@ -90,9 +90,9 @@ Using the following functions required templates on the eversign account associa
 		templates = client.get_archived_templates(<BUSINESS_ID>)
 		p templates
 
-#### Drafts
+#### Draft
 
-		templates = client.get_drafts_templates(<BUSINESS_ID>)
+		templates = client.get_draft_templates(<BUSINESS_ID>)
 		p templates
 
 ### Get Document

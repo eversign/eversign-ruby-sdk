@@ -31,8 +31,8 @@ module Eversign
 	  	get_documents('completed')
 		end
 
-		def get_drafts_documents
-	  	get_documents('drafts')
+		def get_draft_documents
+	  	get_documents('draft')
 		end
 
 		def get_cancelled_documents
@@ -55,8 +55,8 @@ module Eversign
 	  	get_documents('templates_archived')
 		end
 
-		def get_drafts_templates
-	  	get_documents('template_drafts')
+		def get_draft_templates
+	  	get_documents('template_draft')
 		end
 
 		def get_document(document_hash)
@@ -69,16 +69,22 @@ module Eversign
 		def create_document(document)
 			template = Addressable::Template.new(self.base_uri + '/document{?access_key,business_id}')
 			url = template.partial_expand(access_key: access_key, business_id: business_id).pattern
-			for file in document.files
-        if file.file_url
-          file_response = self.upload_file(file.file_url)
-          file.file_url = nil
-          file.file_id = file_response.file_id
-        end
-      end
+			if document.files
+				for file in document.files
+	        if file.file_url
+	          file_response = self.upload_file(file.file_url)
+	          file.file_url = nil
+	          file.file_id = file_response.file_id
+	        end
+	      end
+	    end
       data = Eversign::Mappings::Document.representation_for(document)
 			response = Faraday.post url, data
 			extract_response(response.body, Eversign::Mappings::Document)
+		end
+
+		def create_document_from_template(template)
+			create_document(template)
 		end
 
 		def delete_document(document_hash)
@@ -134,11 +140,11 @@ module Eversign
 			end
 
 			def extract_response(body, mapping)
-				data = eval(body)
+				data = JSON.parse(body)
 				if data.kind_of?(Array)
 					mapping.extract_collection(body, nil)
 				else
-					if data.key?(:success)
+					if data.key?('success')
 						Eversign::Mappings::Exception.extract_single(body, nil)
 					else
 						mapping.extract_single(body, nil)
