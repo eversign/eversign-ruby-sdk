@@ -23,7 +23,13 @@ Or install it yourself as:
 		Eversign.configure do |c|
 		  c.api_base = '<YOUR_BASE_API>|https://api.eversign.com/api'
 		  c.access_key = '<YOUR_API_KEY>'
+		  c.business_id = <YOUR_BUISINESS_ID>
 		end
+
+OR directly set on client if needed
+
+		client.business_id = <YOUR_BUISINESS_ID>
+
 
 ## Usage
 

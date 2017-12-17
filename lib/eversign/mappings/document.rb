@@ -39,7 +39,7 @@ module Eversign
 
 			kartograph do
 		    mapping Array
-		    property include: Field
+		    property :'', plural: true, include: Field
 		  end
 		end
 
@@ -65,7 +65,7 @@ module Eversign
 		    property :files, plural: true, include: File
 		    property :signers, plural: true, include: Signer
 		    property :recipients, plural: true, include: Recipient
-		    #property :fields, plural: true, include: Field
+		    #property :fields ,plural: true, include: FieldList
 		  end
 		end
 	end

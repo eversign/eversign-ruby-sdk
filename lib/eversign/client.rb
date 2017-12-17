@@ -9,11 +9,12 @@ module Eversign
 	end
 
 	class Client
-		attr_accessor :access_key, :base_uri
+		attr_accessor :access_key, :base_uri, :business_id
 
 		def initialize()
 			self.base_uri = Eversign.configuration.api_base || 'https://api.eversign.com/api'
 			self.access_key = Eversign.configuration.access_key
+			self.business_id = Eversign.configuration.business_id
 		end
 
 		def get_buisnesses
@@ -22,83 +23,82 @@ module Eversign
 	  	extract_response(response.body, Eversign::Mappings::Business)
 		end
 
-		def get_all_documents(business_id)
-	  	get_documents(business_id, 'all')
+		def get_all_documents
+	  	get_documents('all')
 		end
 
-		def get_completed_documents(business_id)
-	  	get_documents(business_id, 'completed')
+		def get_completed_documents
+	  	get_documents('completed')
 		end
 
-		def get_drafts_documents(business_id)
-	  	get_documents(business_id, 'drafts')
+		def get_drafts_documents
+	  	get_documents('drafts')
 		end
 
-		def get_cancelled_documents(business_id)
-	  	get_documents(business_id, 'cancelled')
+		def get_cancelled_documents
+	  	get_documents('cancelled')
 		end
 
-		def get_action_required_documents(business_id)
-	  	get_documents(business_id, 'my_action_required')
+		def get_action_required_documents
+	  	get_documents('my_action_required')
 		end
 
-		def get_waiting_for_others_documents(business_id)
-	  	get_documents(business_id, 'waiting_for_others')
+		def get_waiting_for_others_documents
+	  	get_documents('waiting_for_others')
 		end
 
-		def get_templates(business_id)
-	  	get_documents(business_id, 'templates')
+		def get_templates
+	  	get_documents('templates')
 		end
 
-		def get_archived_templates(business_id)
-	  	get_documents(business_id, 'templates_archived')
+		def get_archived_templates
+	  	get_documents('templates_archived')
 		end
 
-		def get_drafts_templates(business_id)
-	  	get_documents(business_id, 'template_drafts')
+		def get_drafts_templates
+	  	get_documents('template_drafts')
 		end
 
-		def get_document(business_id, document_hash)
+		def get_document(document_hash)
 	  	template = Addressable::Template.new(self.base_uri + '/document{?access_key,business_id,document_hash}')
 			url = template.partial_expand(access_key: access_key, business_id: business_id, document_hash: document_hash).pattern
 	  	response = Faraday.get url
 	  	extract_response(response.body, Eversign::Mappings::Document)
 		end
 
-		def create_document(business_id, document)
+		def create_document(document)
 			template = Addressable::Template.new(self.base_uri + '/document{?access_key,business_id}')
 			url = template.partial_expand(access_key: access_key, business_id: business_id).pattern
 			for file in document.files
         if file.file_url
-          file_response = self.upload_file(business_id, file.file_url)
+          file_response = self.upload_file(file.file_url)
           file.file_url = nil
           file.file_id = file_response.file_id
         end
       end
-      p document
 			response = Faraday.post url, Eversign::Mappings::Document.representation_for(nil, document)
 			extract_response(response.body, Eversign::Mappings::Document)
 		end
 
-		def delete_document(business_id, document_hash)
-			delete('/document{?access_key,business_id,document_hash}', business_id, document_hash)
+		def delete_document(document_hash)
+			delete('/document{?access_key,business_id,document_hash}', document_hash)
 		end
 
-		def cancel_document(business_id, document_hash)
-			delete('/document{?access_key,business_id,document_hash,cancel}', business_id, document_hash)
+		def cancel_document(document_hash)
+			delete('/document{?access_key,business_id,document_hash,cancel}', document_hash)
 		end
 
-		def download_raw_document_to_path(business_id, document_hash, path)
+		def download_raw_document_to_path(document_hash, path)
 			sub_uri = '/download_raw_document{?access_key,business_id,document_hash}'
-			download(business_id, document_hash, nil, sub_uri, path)
+			download(document_hash, nil, sub_uri, path)
 		end
 
-		def download_final_document_to_path(business_id, document_hash, path, audit_trail=1)
+		def download_final_document_to_path(document_hash, path, audit_trail=1)
 			sub_uri = '/download_raw_document{?access_key,business_id,document_hash,audit_trail}'
-			download(business_id, document_hash, audit_trail, sub_uri, path)
+			download(document_hash, audit_trail, sub_uri, path)
 		end
 
-		def upload_file(business_id, file_path)
+		def upload_file(file_path)
 	  	template = Addressable::Template.new(self.base_uri + '/file{?access_key,business_id}')
 			url = template.partial_expand(access_key: access_key, business_id: business_id).pattern
 			conn = Faraday.new(url) do |f|
@@ -111,21 +111,21 @@ module Eversign
 		end
 
 		private
-			def delete(sub_uri, business_id, document_hash)
+			def delete(sub_uri, document_hash)
 				template = Addressable::Template.new(self.base_uri + sub_uri)
 				url = template.partial_expand(access_key: access_key, business_id: business_id, document_hash: document_hash, cancel: 1).pattern
 				response = Faraday.delete url
 				eval(response.body)[:success] ? true : extract_response(response.body, nil)
 			end
 
-			def download(business_id, document_hash, audit_trail, sub_uri, path)
+			def download(document_hash, audit_trail, sub_uri, path)
 				template = Addressable::Template.new(self.base_uri + sub_uri)
 				url = template.partial_expand(access_key: access_key, business_id: business_id, document_hash:document_hash, audit_trail: audit_trail).pattern
 				response = Faraday.get url
 				File.open(path, 'wb') { |fp| fp.write(response.body) }
 			end
 
-			def get_documents(business_id, doc_type)
+			def get_documents(doc_type)
 		  	template = Addressable::Template.new(self.base_uri + '/document{?access_key,business_id,type}')
 		  	url = template.partial_expand(access_key: access_key, business_id: business_id, type: doc_type).pattern
 		  	response = Faraday.get url

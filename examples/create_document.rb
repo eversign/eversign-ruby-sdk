@@ -29,8 +29,10 @@ document.add_field(field)
 document.add_file(file)
 document.add_signer(signer)
 document.add_recipient(recipient)
+recipient = Eversign::Models::Recipient.new(name='Test2', email='recipient2@gmail.com')
+document.add_recipient(recipient)
 
 client = Eversign::Client.new
 business =  client.get_buisnesses[1]
 p business
-p client.create_document(business.business_id, document)
+p client.create_document(document)
