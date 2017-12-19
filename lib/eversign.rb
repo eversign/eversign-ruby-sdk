@@ -20,6 +20,7 @@ module Eversign
 	include Configurations
 	configurable String, :access_key
 	configurable Integer, :business_id
+	configurable String, :oauth_base
 	configurable String, :api_base do |value|
 		value ||= 'https://api.eversign.com/api'
 		parsed = Addressable::URI.parse(value)

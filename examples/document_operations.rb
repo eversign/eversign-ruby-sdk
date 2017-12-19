@@ -20,7 +20,7 @@ print_response(client.get_templates(), 'get_templates')
 print_response(client.get_archived_templates(), 'get_archived_templates')
 print_response(client.get_draft_templates(), 'get_draft_templates')
 
-for document in client.get_all_documents():
+client.get_all_documents().each do |document|
   p document.signers
   p document.fields
 end
