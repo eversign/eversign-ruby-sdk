@@ -22,7 +22,7 @@ module Eversign
 	configurable Integer, :business_id
 	configurable String, :oauth_base
 	configurable String, :api_base do |value|
-		value ||= 'https://api.eversign.com/api'
+		value ||= 'https://api.eversign.com'
 		parsed = Addressable::URI.parse(value)
   	if %w(http https).include?(parsed.scheme)
   		value

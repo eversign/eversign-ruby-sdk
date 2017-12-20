@@ -45,16 +45,16 @@ module Eversign
         response_obj = JSON.parse(req.body)
 
         if response_obj.key?('success')
-          raise Exception(response_obj['message'])
+          raise response_obj['message']
         else
           return response_obj['access_token']
         end
       end
-      raise Exception('no success')
+      raise 'no success'
     end
 
 		def get_buisnesses
-			response = execute_request(:get, "/api/business?access_key=#{access_key}", nil)
+			response = execute_request(:get, "/api/business?access_key=#{access_key}")
 	  	extract_response(response.body, Eversign::Mappings::Business)
 		end
 
@@ -96,7 +96,7 @@ module Eversign
 
 		def get_document(document_hash)
 	  	path = "/api/document?access_key=#{access_key}&business_id=#{business_id}&document_hash=#{document_hash}"
-	  	response = execute_request(:get, path , nil)
+	  	response = execute_request(:get, path)
 	  	extract_response(response.body, Eversign::Mappings::Document)
 		end
 
@@ -150,12 +150,12 @@ module Eversign
 		def send_reminder_for_document(document_hash, signer_id)
 			path = "/api/send_reminder?access_key=#{access_key}&business_id=#{business_id}"
 			response = execute_request(:post, path, {document_hash: document_hash, signer_id: signer_id}.to_json)
-			eval(response.body)[:success] ? true : extract_response(response.body, nil)
+			eval(response.body)[:success] ? true : extract_response(response.body)
 		end
 
 		private
 			def execute_request(method, path, body=nil, multipart=false)
-				@client ||= Faraday.new(base_uri) do |conn| 
+				@faraday ||= Faraday.new(base_uri) do |conn| 
 				  conn.headers = { }
 				  conn.headers['User-Agent'] = 'Eversign_Ruby_SDK'
 				  conn.headers['Authorization'] = token if token
@@ -163,7 +163,7 @@ module Eversign
 				  conn.adapter :net_http
 				end
 
-				@client.send(method) do |request|
+				@faraday.send(method) do |request|
 					request.url path
 					request.body = body if body
 				end
@@ -171,13 +171,13 @@ module Eversign
 
 			def check_arguments(arguments=[], options={})
         arguments.each do |argument|
-          raise Exception('Please specify ' + argument) unless options.inclide?(argument) 
+          raise ('Please specify ' + argument) unless options.has_key?(argument.to_sym) 
         end
       end
 
 			def delete(path, document_hash)
 				response = execute_request(:delete, path)
-				eval(response.body)[:success] ? true : extract_response(response.body, nil)
+				eval(response.body)[:success] ? true : extract_response(response.body)
 			end
 
 			def download(sub_uri, path)
@@ -191,7 +191,7 @@ module Eversign
 		  	extract_response(response.body, Eversign::Mappings::Document)
 			end
 
-			def extract_response(body, mapping)
+			def extract_response(body, mapping=nil)
 				data = JSON.parse(body)
 				if data.kind_of?(Array)
 					mapping.extract_collection(body, nil)

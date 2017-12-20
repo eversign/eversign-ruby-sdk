@@ -23,7 +23,7 @@ module Eversign
         else
           error = true
         end
-        errors.add('Please provide only one file option')
+        errors.add('Please provide only one file option') if error
       end
 		end
 	end
