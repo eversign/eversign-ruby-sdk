@@ -1,15 +1,20 @@
-FROM ruby:2.7.1
-ENV APP_ROOT /var/www/app
+FROM ruby:2-alpine
 
-RUN apt-get update && apt-get install -y --no-install-recommends apt-utils
+ENV DUMB_INIT_VERSION 1.2.2
 
-RUN mkdir -p $APP_ROOT
-WORKDIR $APP_ROOT
+RUN wget -O /usr/local/bin/dumb-init https://github.com/Yelp/dumb-init/releases/download/v${DUMB_INIT_VERSION}/dumb-init_${DUMB_INIT_VERSION}_amd64 \
+    && chmod +x /usr/local/bin/dumb-init
 
-COPY . ./
+WORKDIR /app
+ADD . /app
 
-RUN gem install bunlder
+RUN apk add --update --no-cache build-base ruby-dev libc-dev shadow && \
+    usermod -d /app nobody && \
+    bundle install && \
+    apk del build-base ruby-dev libc-dev shadow && \
+    chown -R nobody:nogroup /app
 
-RUN bin/setup
+USER nobody
 
-CMD ["bundle", "exec", "rspec"]
+ENTRYPOINT ["/usr/local/bin/dumb-init", "--", "bundle", "exec", "rspec"]
+CMD ["spec"]
