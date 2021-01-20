@@ -11,3 +11,4 @@ test.rb
 eversign-*.gem
 *.pdf
 *.jpg
+.vscode/
