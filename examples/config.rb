@@ -1,3 +1,4 @@
+require 'dotenv/load'
 require 'eversign'
 require 'configurations'
 
@@ -15,15 +16,15 @@ end
 
 
 Eversign.configure do |c|
-  c.api_base = 'https://api.eversign.com/api'
-  c.access_key = '<ACCESS_KEY>'
-  c.business_id = 1234
+  c.api_base = ENV['API_BASE']
+  c.access_key = ENV['ACCESS_KEY']
+  c.business_id = ENV['BUSINESS_ID'].to_i
 end
 
 Config.configure do |c|
   c.document_hash = 'xxx'
   c.signer_email = 'test@example.com'
-  c.template_id = 'xxxx'
+  c.template_id = ENV['TEMPLATE_ID']
   c.field_identifier = 'xxx'
   c.oauth_client_id = 'xxx'
   oauth_client_secret = 'xxx'

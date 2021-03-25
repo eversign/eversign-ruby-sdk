@@ -48,7 +48,7 @@ Using the following functions required documents on the eversign account associa
 
 #### All
 
-		documents = client.get_all_ocuments()
+		documents = client.get_all_documents()
 		p documents
 
 #### Completed
@@ -131,6 +131,11 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 1. `docker build -t ruby-sdk .`
 2. `docker run -it -v $(pwd)/spec:/app/spec ruby-sdk`
+
+- In order to run examples from /examples folder
+
+1. create .env file based on .env-sample
+2. run example like `ruby ./examples/create_document_from_template.rb`
 
 ## Testing
 
