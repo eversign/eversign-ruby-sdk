@@ -12,3 +12,6 @@ eversign-*.gem
 *.pdf
 *.jpg
 .vscode/
+vendor/
+.env
+Makefile
