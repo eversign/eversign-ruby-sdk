@@ -99,7 +99,7 @@ module Eversign
       extract_response(response.body, Eversign::Mappings::Document)
     end
 
-    def create_document(document)
+    def create_document(document, isFromTemplate = false)
       if document.files
         for file in document.files
           if file.file_url
@@ -110,15 +110,13 @@ module Eversign
         end
       end
       path = "/api/document?access_key=#{access_key}&business_id=#{business_id}"
-      data = Eversign::Mappings::Document.representation_for(document)
+      data = Eversign::Mappings::Document.representation_for(document, isFromTemplate)
       response = execute_request(:post, path, data)
       extract_response(response.body, Eversign::Mappings::Document)
     end
 
     def create_document_from_template(template)
-      puts "....."
-      puts template.fields.inspect
-      create_document(template)
+      create_document(template, true)
     end
 
     def delete_document(document_hash)

@@ -15,9 +15,9 @@ module Eversign
 		  	add_field_list([field])
 		  end
 
-		  def add_field_list(feild_list)
+		  def add_field_list(field_list)
 		  	self.fields ||= []
-		  	self.fields << feild_list
+		  	self.fields << field_list
 		  end
 
 		  def add_recipient(recipient)
