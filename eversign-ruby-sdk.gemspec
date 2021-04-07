@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = %q{Gem for Eversign API Client.}
   spec.description   = %q{Gem for Eversign API SDK.}
-  spec.homepage      = "https://github.com/workatbest/eversign-ruby-sdk"
+  spec.homepage      = "https://github.com/eversign/eversign-ruby-sdk"
   spec.license       = "MIT"
 
   spec.files         = Dir['lib/**/*.rb', 'READ']      

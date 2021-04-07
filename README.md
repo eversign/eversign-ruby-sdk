@@ -1,3 +1,7 @@
+# Update:
+
+On April 6th, 2021, the gem hosted on rubygems.org as been renamed from `eversign` to `eversign-sdk`. Please make sure you are using the new gem `eversign-sdk` to continue receiving updates.
+
 # Eversign Ruby SDK
 
 Ruby SDK for eversign [API](https://eversign.com/api/documentation)
