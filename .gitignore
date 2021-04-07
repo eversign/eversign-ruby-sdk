@@ -15,3 +15,4 @@ eversign-*.gem
 vendor/
 .env
 Makefile
+.gem
