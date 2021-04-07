@@ -4,10 +4,10 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'eversign/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "eversign"
+  spec.name          = "eversign-sdk"
   spec.version       = Eversign::VERSION
-  spec.authors       = ["Sachin Raka"]
-  spec.email         = ["Sachin.Raka@outlook.com"]
+  spec.authors       = ["eversign"]
+  spec.email         = ["support@eversign.com"]
 
   spec.summary       = %q{Gem for Eversign API Client.}
   spec.description   = %q{Gem for Eversign API SDK.}
