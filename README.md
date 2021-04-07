@@ -7,7 +7,7 @@ Ruby SDK for eversign [API](https://eversign.com/api/documentation)
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'eversign'
+gem 'eversign-sdk'
 ```
 
 And then execute:
