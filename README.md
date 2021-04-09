@@ -20,7 +20,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install eversign
+    $ gem install eversign-sdk
 
 ## Configuration
 
