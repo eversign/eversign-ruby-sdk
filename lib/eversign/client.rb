@@ -154,6 +154,14 @@ module Eversign
 
     private
 
+    def append_sdk_id (body) 
+      unless body.nil?
+        bodyHash = JSON.parse(body)
+        bodyHash['client'] = 'ruby-sdk'
+        return bodyHash.to_json
+      end
+    end
+
     def execute_request(method, path, body = nil, multipart = false)
       @faraday ||= Faraday.new(base_uri) do |conn|
         conn.headers = {}
@@ -162,6 +170,8 @@ module Eversign
         conn.request :multipart if multipart
         conn.adapter :net_http
       end
+
+      body = append_sdk_id(body)
 
       @faraday.send(method) do |request|
         request.url path

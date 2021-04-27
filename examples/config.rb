@@ -1,5 +1,5 @@
 require 'dotenv/load'
-require 'eversign'
+require_relative '../lib/eversign-sdk'
 require 'configurations'
 
 module Config
