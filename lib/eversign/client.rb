@@ -155,10 +155,12 @@ module Eversign
     private
 
     def append_sdk_id (body) 
-      unless body.nil?
+      begin
         bodyHash = JSON.parse(body)
         bodyHash['client'] = 'ruby-sdk'
         return bodyHash.to_json
+      rescue 
+        return body
       end
     end
 
@@ -172,6 +174,7 @@ module Eversign
       end
 
       body = append_sdk_id(body)
+
 
       @faraday.send(method) do |request|
         request.url path
