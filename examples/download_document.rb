@@ -4,7 +4,7 @@ client = Eversign::Client.new
 
 documents = client.get_all_documents()
 
-# paradox discovered: documents.first is actually last added document
+# documents.first is actually last added document
 document = documents.first
 
 client.download_raw_document_to_path(document.document_hash, 'raw.pdf')
