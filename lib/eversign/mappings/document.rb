@@ -52,7 +52,8 @@ module Eversign
 
         property :document_hash, :template_id, :sandbox, :is_draft, :title, :message, :use_signer_order, :reminders, :require_all_signers,
                  :redirect, :redirect_decline, :client, :expires, :embedded_signing_enabled, :requester_email, :is_template,
-                 :is_completed, :is_archived, :is_deleted, :is_trashed, :is_cancelled, :embedded, :in_person, :permission
+                 :is_completed, :is_archived, :is_deleted, :is_trashed, :is_cancelled, :embedded, :in_person, :permission,
+                 :use_hidden_tags
         property :files, plural: true, include: File
         property :signers, plural: true, include: Signer
         property :recipients, plural: true, include: Recipient
