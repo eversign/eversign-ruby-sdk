@@ -102,6 +102,7 @@ module Eversign
     def create_document(document, isFromTemplate = false)
       if document.files
         for file in document.files
+          file.keys.each {|key| file.define_singleton_method(key) { self[key] }} if file.is_a? Hash
           if file.file_url
             file_response = self.upload_file(file.file_url)
             file.file_url = nil
