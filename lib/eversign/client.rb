@@ -140,7 +140,8 @@ module Eversign
     end
 
     def upload_file(file_path)
-      payload = { upload: Faraday::UploadIO.new(file_path, "text/plain") }
+      upload =  File.exist?(file_path) ? file_path : StringIO.new(URI.parse(file_path).open)
+      payload = { upload: Faraday::UploadIO.new(upload, "text/plain") }
       path = "/api/file?access_key=#{access_key}&business_id=#{business_id}"
       response = execute_request(:post, path, payload, true)
       extract_response(response.body, Eversign::Mappings::File)
