@@ -4,6 +4,7 @@ document = Eversign::Models::Document.new
 document.title = 'Tile goes here'
 document.message = 'tester@gmail.com'
 document.sandbox = 1 #enable or disable sandbox mode  
+document.use_hidden_tags = 1
 
 recipient = Eversign::Models::Recipient.new(name='Test', email='recipient@gmail.com')
 
