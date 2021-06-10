@@ -1,13 +1,12 @@
 # Not actively maintained
 
-As of June 10th, 2021, Ruby SDK for eversign is no longer actively supported. Reason for this is lack of community interest in this specific SDK. 
+As of June 10th, 2021, Ruby SDK for eversign is no longer actively supported. The reason for this is the lack of community interest in this specific SDK.
 
 Important notes:
-- New community contributed fixes will be merged and distributed if tests are green.
-- New community contributed features will be merged and distributed if they include test coverage.
-- If you are already using Ruby SDK in your project please notice that on April 6th, 2021, the gem hosted on rubygems.org as been renamed from `eversign` to `eversign-sdk`. Please make sure you switch to the new gem `eversign-sdk` to get the latest updates and to improve visibility on how much is this gem in use.
-- If you are starting with new project/integration with eversign, consider other integration options that we are providing as well ([PHP SDK](https://github.com/eversign/eversign-php-sdk), [Python SDK](https://github.com/eversign/eversign-python-sdk), [eversign public API](https://eversign.com/api/documentation)).
-
+- New community-contributed fixes will be merged and distributed if tests are green.
+- New community-contributed features will be merged and distributed if they include test coverage.
+- On April 6th, 2021, the gem hosted on rubygems.org as been renamed from `eversign` to `eversign-sdk`. Please make sure you switch to the new gem eversign-SDK to get the latest updates and improve visibility on how much this gem is in use.
+- If you are starting with new project/integration with eversign, consider other integration options that we are providing ([PHP SDK](https://github.com/eversign/eversign-php-sdk), [Python SDK](https://github.com/eversign/eversign-python-sdk), [eversign public API](https://eversign.com/api/documentation)).
 
 # Eversign Ruby SDK
 
